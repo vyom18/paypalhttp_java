@@ -2,11 +2,11 @@
 
 PaypalHttp is a generic HTTP Client.
 
-In it's simplest form, an [`HttpClient`](./paypalhttp/src/main/java/com/paypal/http/HttpClient.java) exposes an `#execute` method which takes an `HttpRequest`, executes it against the domain described in an `Environment`, and returns an `HttpResponse`. It throws an `IOException` if anything goes wrong during execution.
+In it's simplest form, an [`HttpClient`](./paypalhttp/src/main/java/com/paypal/http/HttpClient.java) exposes an `#execute` method which takes an `HttpRequest` object which executes it against the domain described in an `Environment`, and returns an `HttpResponse` object. It throws an `IOException` if anything goes wrong during execution.
 
 ### Environment
 
-An [`Environment`](./paypalhttp/src/main/java/com/paypal/http/Environment.java) describes a domain that hosts a REST API, against which an `HttpClient` will make requests. `Environment` is a simple interface that wraps one method, `#baseUrl`.
+An [`Environment`](./paypalhttp/src/main/java/com/paypal/http/Environment.java) describes a domain that hosts a REST API, against which an `HttpClient` will make requests. `Environment` is a simple interface that wraps one method, `#baseUrl` to get the url
 
 ```java
 Environment env = () -> "https://example.com";
@@ -18,7 +18,7 @@ Environment env = () -> "https://example.com";
 
 ### Responses
 
-[`HttpResponse`](./paypalhttp/src/main/java/com/paypal/http/HttpResponse.java)s contain information returned by a server in response to a request as described above. They contain a status code, headers, and any data returned by the server, deserialized in accordance with the type in the `HttpRequest` from which this reponse originated.
+[`HttpResponse`](./paypalhttp/src/main/java/com/paypal/http/HttpResponse.java)s contain information returned by a server in response to a request sent to the server as described above. They contain a status code, headers, and any data returned by the server, deserialized in accordance with the type in the `HttpRequest` from which this reponse is originated.
 
 ```java
 HttpRequest<MyResponsePojo> req = new HttpRequest("/path/to/resource", "GET", MyResponsePojo.class);
@@ -52,7 +52,7 @@ client.addInjector(req -> {
 
 ### Error Handling
 
-`HttpClient#execute` may throw an `IOException` if something went wrong during the course of execution. If the server returned a non-200 response, this execption will be an instance of [`HttpException`](./paypalhttp/src/main/java/com/paypal/http/exceptions/HttpException.java) that will contain a status code and headers you can use for debugging. 
+`HttpClient#execute` may throw an `IOException` if something went wrong during the course of execution. If the server returned a non-200 response(not successfull), this execption will be an instance of [`HttpException`](./paypalhttp/src/main/java/com/paypal/http/exceptions/HttpException.java) that will contain a status code which defines what error has occured and headers you can use for debugging. 
 
 ```java
 try {
